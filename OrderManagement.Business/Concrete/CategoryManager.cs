@@ -12,5 +12,20 @@ namespace OrderManagement.Business.Concrete
         {
             _categoryRepository = categoryRepository;
         }
+
+        public void TDontShowOnHome(int id)
+        {
+            _categoryRepository.DontShowOnHome(id);
+        }
+
+        public void TShowOnHome(int id)
+        {
+            _categoryRepository.ShowOnHome(id);
+        }
+
+        public void TChangeStatus(int id)
+        {
+            _categoryRepository.ChangeStatus(id);
+        }
     }
 }

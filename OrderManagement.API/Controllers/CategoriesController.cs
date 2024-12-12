@@ -76,5 +76,26 @@ namespace OrderManagement.API.Controllers
             var value = _categoryService.TFilteredCount(x => x.Status == false);
             return Ok(value);
         }
+
+        [HttpGet("ShowOnHome/{id}")]
+        public IActionResult ShowOnHome(int id)
+        {
+            _categoryService.TShowOnHome(id);
+            return Ok("Ana Sayfada Gösteriliyor");
+        }
+
+        [HttpGet("DontShowOnHome/{id}")]
+        public IActionResult DontShowOnHome(int id)
+        {
+            _categoryService.TDontShowOnHome(id);
+            return Ok("Ana Sayfada Gösterilmiyor");
+        }
+
+        [HttpGet("ChangeStatus/{id}")]
+        public IActionResult ChangeStatus(int id)
+        {
+            _categoryService.TChangeStatus(id);
+            return Ok("Durum Değiştirildi.");
+        }
     }
 }
