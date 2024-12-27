@@ -55,5 +55,26 @@ namespace OrderManagement.API.Controllers
             _aboutService.TUpdate(value);
             return Ok("Hakkımda Alanı Güncellendi");
         }
+
+        [HttpGet("ShowOnHome/{id}")]
+        public IActionResult ShowOnHome(int id)
+        {
+            _aboutService.TShowOnHome(id);
+            return Ok("Ana Sayfada Gösteriliyor");
+        }
+
+        [HttpGet("DontShowOnHome/{id}")]
+        public IActionResult DontShowOnHome(int id)
+        {
+            _aboutService.TDontShowOnHome(id);
+            return Ok("Ana Sayfada Gösterilmiyor");
+        }
+
+        [HttpGet("ChangeStatus/{id}")]
+        public IActionResult ChangeStatus(int id)
+        {
+            _aboutService.TChangeStatus(id);
+            return Ok("Durum Değiştirildi.");
+        }
     }
 }

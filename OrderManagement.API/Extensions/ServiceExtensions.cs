@@ -39,6 +39,12 @@ namespace OrderManagement.API.Extensions
 
             services.AddScoped<ITestimonialRepository, TestimonialRepository>();
             services.AddScoped<ITestimonialService, TestimonialManager>();
+
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderService, OrderManager>();
+
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+            services.AddScoped<IOrderDetailService, OrderDetailManager>();
         }
     }
 }

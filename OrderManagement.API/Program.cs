@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OrderManagement.API.Extensions;
+using OrderManagement.API.Hubs;
 using OrderManagement.DataAccess.Context;
 using System.Reflection;
 
@@ -8,6 +9,19 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddServiceExtensions();
+
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.AllowAnyHeader()
+        .AllowAnyMethod()
+        .SetIsOriginAllowed((host) => true)
+        .AllowCredentials();
+    });
+});
+
+builder.Services.AddSignalR();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -32,10 +46,14 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors("CorsPolicy");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<SignalRHub>("/signalrhub");
 
 app.Run();

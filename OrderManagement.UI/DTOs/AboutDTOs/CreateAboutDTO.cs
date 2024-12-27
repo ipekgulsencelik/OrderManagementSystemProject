@@ -1,4 +1,4 @@
-﻿namespace OrderManagement.DTO.DTOs.AboutDTOs
+﻿namespace OrderManagement.UI.DTOs.AboutDTOs
 {
     public class CreateAboutDTO
     {

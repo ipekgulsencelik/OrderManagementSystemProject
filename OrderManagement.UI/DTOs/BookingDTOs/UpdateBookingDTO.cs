@@ -1,4 +1,4 @@
-﻿namespace OrderManagement.DTO.DTOs.BookingDTOs
+﻿namespace OrderManagement.UI.DTOs.BookingDTOs
 {
     public class UpdateBookingDTO
     {

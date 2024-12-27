@@ -55,5 +55,26 @@ namespace OrderManagement.API.Controllers
             _contactService.TUpdate(value);
             return Ok("İletişim Bilgisi Güncellendi");
         }
+
+        [HttpGet("ShowOnHome/{id}")]
+        public IActionResult ShowOnHome(int id)
+        {
+            _contactService.TShowOnHome(id);
+            return Ok("Ana Sayfada Gösteriliyor");
+        }
+
+        [HttpGet("DontShowOnHome/{id}")]
+        public IActionResult DontShowOnHome(int id)
+        {
+            _contactService.TDontShowOnHome(id);
+            return Ok("Ana Sayfada Gösterilmiyor");
+        }
+
+        [HttpGet("ChangeStatus/{id}")]
+        public IActionResult ChangeStatus(int id)
+        {
+            _contactService.TChangeStatus(id);
+            return Ok("Durum Değiştirildi.");
+        }
     }
 }

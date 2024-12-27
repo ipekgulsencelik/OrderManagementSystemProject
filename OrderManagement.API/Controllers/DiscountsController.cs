@@ -74,5 +74,25 @@ namespace OrderManagement.API.Controllers
             return Ok(passives);
         }
 
+        [HttpGet("ShowOnHome/{id}")]
+        public IActionResult ShowOnHome(int id)
+        {
+            _discountService.TShowOnHome(id);
+            return Ok("Ana Sayfada Gösteriliyor");
+        }
+
+        [HttpGet("DontShowOnHome/{id}")]
+        public IActionResult DontShowOnHome(int id)
+        {
+            _discountService.TDontShowOnHome(id);
+            return Ok("Ana Sayfada Gösterilmiyor");
+        }
+
+        [HttpGet("ChangeStatus/{id}")]
+        public IActionResult ChangeStatus(int id)
+        {
+            _discountService.TChangeStatus(id);
+            return Ok("Durum Değiştirildi.");
+        }
     }
 }

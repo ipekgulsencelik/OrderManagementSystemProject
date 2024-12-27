@@ -18,5 +18,40 @@ namespace OrderManagement.Business.Concrete
         {
             return _productRepository.GetProductsWithCategories();
         }
+
+        public void TDontShowOnHome(int id)
+        {
+            _productRepository.DontShowOnHome(id);
+        }
+
+        public void TShowOnHome(int id)
+        {
+            _productRepository.ShowOnHome(id);
+        }
+
+        public void TChangeStatus(int id)
+        {
+            _productRepository.ChangeStatus(id);
+        }
+
+        public double TAvgProductPrice()
+        {
+            return _productRepository.AvgProductPrice();
+        }
+
+        public double TAvgHamburgerPrice()
+        {
+            return _productRepository.AvgHamburgerPrice();
+        }
+
+        public string TMostExpensiveProduct()
+        {
+            return _productRepository.MostExpensiveProduct();
+        }
+
+        public string TCheapestProduct()
+        {
+            return _productRepository.CheapestProduct();
+        }
     }
 }

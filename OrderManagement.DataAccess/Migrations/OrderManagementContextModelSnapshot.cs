@@ -193,6 +193,69 @@ namespace OrderManagement.DataAccess.Migrations
                     b.ToTable("Features");
                 });
 
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.Order", b =>
+                {
+                    b.Property<int>("OrderID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderID"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TableNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("OrderID");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.OrderDetail", b =>
+                {
+                    b.Property<int>("OrderDetailID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailID"));
+
+                    b.Property<int>("OrderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("OrderDetailID");
+
+                    b.HasIndex("OrderID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("OrderDetails");
+                });
+
             modelBuilder.Entity("OrderManagement.Entity.Entitles.Product", b =>
                 {
                     b.Property<int>("ProductID")
@@ -288,6 +351,25 @@ namespace OrderManagement.DataAccess.Migrations
                     b.ToTable("Testimonials");
                 });
 
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.OrderDetail", b =>
+                {
+                    b.HasOne("OrderManagement.Entity.Entitles.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OrderManagement.Entity.Entitles.Product", "Product")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("OrderManagement.Entity.Entitles.Product", b =>
                 {
                     b.HasOne("OrderManagement.Entity.Entitles.Category", "Category")
@@ -302,6 +384,16 @@ namespace OrderManagement.DataAccess.Migrations
             modelBuilder.Entity("OrderManagement.Entity.Entitles.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.Product", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 #pragma warning restore 612, 618
         }

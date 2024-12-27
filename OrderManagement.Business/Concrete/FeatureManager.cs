@@ -12,5 +12,20 @@ namespace OrderManagement.Business.Concrete
         {
             _featureRepository = featureRepository;
         }
+
+        public void TDontShowOnHome(int id)
+        {
+            _featureRepository.DontShowOnHome(id);
+        }
+
+        public void TShowOnHome(int id)
+        {
+            _featureRepository.ShowOnHome(id);
+        }
+
+        public void TChangeStatus(int id)
+        {
+            _featureRepository.ChangeStatus(id);
+        }
     }
 }

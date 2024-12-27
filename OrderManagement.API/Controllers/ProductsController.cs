@@ -17,6 +17,13 @@ namespace OrderManagement.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetByID(int id)
+        {
+            var value = _productService.TGetByID(id);
+            return Ok(value);
+        }
+
         [HttpGet("ProductListWithCategory")]
         public IActionResult ProductListWithCategory()
         {
@@ -76,6 +83,69 @@ namespace OrderManagement.API.Controllers
             var values = _productService.TFilteredCount(x => x.Status == false);
             var passives = _mapper.Map<List<ResultProductDTO>>(values);
             return Ok(passives);
+        }
+
+        [HttpGet("ShowOnHome/{id}")]
+        public IActionResult ShowOnHome(int id)
+        {
+            _productService.TShowOnHome(id);
+            return Ok("Ana Sayfada Gösteriliyor");
+        }
+
+        [HttpGet("DontShowOnHome/{id}")]
+        public IActionResult DontShowOnHome(int id)
+        {
+            _productService.TDontShowOnHome(id);
+            return Ok("Ana Sayfada Gösterilmiyor");
+        }
+
+        [HttpGet("ChangeStatus/{id}")]
+        public IActionResult ChangeStatus(int id)
+        {
+            _productService.TChangeStatus(id);
+            return Ok("Durum Değiştirildi.");
+        }
+
+        [HttpGet("GetHamburgerCount")]
+        public IActionResult GetHamburgerCount()
+        {
+            var value = _productService.TFilteredCount(x => x.Category.CategoryName.ToLower() == "hamburger");
+            return Ok(value);
+        }
+
+        [HttpGet("GetDrinkCount")]
+        public IActionResult GetDrinkCount()
+        {
+            var value = _productService.TFilteredCount(x => x.Category.CategoryName.ToLower() == "içecek");
+            return Ok(value);
+        }
+
+        [HttpGet("GetAvgProductPrice")]
+        public IActionResult GetAvgProductPrice()
+        {
+            var value = _productService.TAvgProductPrice();
+            return Ok(value);
+        }
+
+        [HttpGet("GetCheapestProduct")]
+        public IActionResult GetCheapestProduct()
+        {
+            var value = _productService.TCheapestProduct();
+            return Ok(value);
+        }
+
+        [HttpGet("GetMostExpensiveProduct")]
+        public IActionResult GetMostExpensiveProduct()
+        {
+            var value = _productService.TMostExpensiveProduct();
+            return Ok(value);
+        }
+
+        [HttpGet("GetAvgHamburgerPrice")]
+        public IActionResult GetAvgHamburgerPrice()
+        {
+            var value = _productService.TAvgHamburgerPrice();
+            return Ok(value);
         }
     }
 }

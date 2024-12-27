@@ -1,0 +1,124 @@
+﻿@model List<ResultContactDTO>
+
+@{
+    ViewData["Title"] = "İletişim Bilgileri";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	int count = 0;
+}
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="content">
+	<div class="container-fluid">
+		<h4 class="page-title">İletişim Bilgileri İşlemleri</h4>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<div class="card-title">İletişim Bilgileri Listesi</div>
+					</div>
+					<div class="card-body">
+						@if (Model.Count() > 0)
+						{
+							<div class="card-sub">
+								İletişim Bilgileri ile ilgili işlemleri aşağıdan gerçekleştirebilirsiniz.
+							</div>
+							<table class="table table-hover table-bordered mt-3">
+								<thead>
+									<tr>
+										<th scope="col">#</th>
+										<th>Konum</th>
+										<th>Telefon</th>
+										<th>Email</th>
+										<th>Açıklama</th>
+										<th scope="col">Durum</th>
+										<th>Gösterilme Durumu</th>
+										<th scope="col">Sil</th>
+										<th scope="col">Güncelle</th>
+										<th>Ana Sayfada</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var item in Model)
+									{
+										count++;
+										<tr>
+											<th>@count</th>
+											<td>@(item.Location.Length > 50 ? item.Location.Substring(0, 50) : item.Location)</td>
+											<td>@item.Phone</td>
+											<td>@item.Email</td>
+											<td>@(item.FooterDescription.Length > 50 ? item.FooterDescription.Substring(0, 50) : item.FooterDescription)</td>
+											<td>
+												@{
+													if (item.Status == true)
+													{
+														<button onclick="changeStatus(@item.ContactID)" type="submit" class="btn btn-success">Aktif</button>
+													}
+													else
+													{
+														<button onclick="changeStatus(@item.ContactID)" type="submit" class="btn btn-danger">Pasif</button>
+													}
+												}
+											</td>
+											<td>@(item.IsShown ? "Gösteriliyor" : "Gösterilmiyor") </td>
+											<td>
+												<button onclick="deleteContact(@item.ContactID)" type="submit" class="btn btn-outline-danger"><i class="la la-trash"></i> Sil</button>
+											</td>
+											<td>
+												<a href="/Admin/Contact/UpdateContact/@item.ContactID" class="btn btn-outline-info"><i class="la la-pencil"></i> Güncelle</a>
+											</td>
+											<td>
+												<a asp-action="ShowOnHome" asp-controller="Contact" asp-area="Admin" asp-route-id="@item.ContactID" class="btn btn-outline-success"> Göster</a>
+												<a asp-action="DontShowOnHome" asp-controller="Contact" asp-area="Admin" asp-route-id="@item.ContactID" class="btn btn-outline-secondary"> Gösterme</a>
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						}
+						else
+						{
+							<p>Kayıtlı Herhangi Bir İletişim Bilgisi Verisi Bulunmamaktatır.</p>
+						}
+						<a href="/Admin/Contact/CreateContact/" class="btn btn-outline-primary"><i class="la la-plus-circle"></i> Yeni İletişim Bilgisi</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function deleteContact(id) {
+		Swal.fire({
+			title: 'Silmek istediğinize emin misiniz?',
+			text: 'Bu öğeyi silerseniz geri alamazsınız!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Sil',
+			cancelButtonText: 'İptal'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = "/Admin/Contact/DeleteContact?id=" + id;
+			}
+		});
+	}
+</script>
+
+<script>
+	function changeStatus(id) {
+		Swal.fire({
+			title: 'Durum',
+			text: 'Durumu değiştirmek istediğinizden emin misiniz?',
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonText: 'Değiştir',
+			cancelButtonText: 'İptal'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = "/Admin/Contact/ChangeStatus?id=" + id;
+			}
+		});
+	}
+</script>

@@ -12,5 +12,20 @@ namespace OrderManagement.Business.Concrete
         {
             _socialMediaRepository = socialMediaRepository;
         }
+
+        public void TDontShowOnHome(int id)
+        {
+            _socialMediaRepository.DontShowOnHome(id);
+        }
+
+        public void TShowOnHome(int id)
+        {
+            _socialMediaRepository.ShowOnHome(id);
+        }
+
+        public void TChangeStatus(int id)
+        {
+            _socialMediaRepository.ChangeStatus(id);
+        }
     }
 }

@@ -12,5 +12,20 @@ namespace OrderManagement.Business.Concrete
         {
             _discountRepository = discountRepository;
         }
+
+        public void TDontShowOnHome(int id)
+        {
+            _discountRepository.DontShowOnHome(id);
+        }
+
+        public void TShowOnHome(int id)
+        {
+            _discountRepository.ShowOnHome(id);
+        }
+
+        public void TChangeStatus(int id)
+        {
+            _discountRepository.ChangeStatus(id);
+        }
     }
 }

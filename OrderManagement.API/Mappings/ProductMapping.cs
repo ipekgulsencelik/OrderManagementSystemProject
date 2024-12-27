@@ -11,6 +11,7 @@ namespace OrderManagement.API.Mappings
             CreateMap<CreateProductDTO, Product>().ReverseMap();
             CreateMap<UpdateProductDTO, Product>().ReverseMap();
             CreateMap<ResultProductDTO, Product>().ReverseMap();
+            CreateMap<ResultProductWithCategoryDTO, Product>().ReverseMap();
         }
     }
 }

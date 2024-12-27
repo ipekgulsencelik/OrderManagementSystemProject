@@ -1,0 +1,123 @@
+﻿@model List<ResultBookingDTO>
+
+@{
+    ViewData["Title"] = "Rezervasyonlar";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+	int count = 0;
+}
+
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+<div class="content">
+	<div class="container-fluid">
+		<h4 class="page-title">Rezervasyon Bilgisi İşlemleri</h4>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<div class="card-title">Öne Çıkan Bilgisi Listesi</div>
+					</div>
+					<div class="card-body">
+						@if (Model.Count() > 0)
+						{
+							<div class="card-sub">
+								Öne Çıkan Bilgisi ile ilgili işlemleri aşağıdan gerçekleştirebilirsiniz.
+							</div>
+							<table class="table table-hover table-bordered mt-3">
+								<thead>
+									<tr>
+										<th scope="col">#</th>
+										<th>Ad Soyad</th>
+										<th>Telefon</th>
+										<th>Email</th>
+										<th>Kaç Kişilik</th>
+										<th>Tarih</th>
+										<th scope="col">Durum</th>
+										<th>Gösterilme Durumu</th>
+										<th scope="col">Sil</th>
+										<th scope="col">Güncelle</th>
+										<th>Ana Sayfada</th>
+									</tr>
+								</thead>
+								<tbody>
+									@foreach (var item in Model)
+									{
+										count++;
+										<tr>
+											<th>@count</th>
+											<td>
+												@{
+													if (item.Status == true)
+													{
+														<button onclick="changeStatus(@item.BookingID)" type="submit" class="btn btn-success">Aktif</button>
+													}
+													else
+													{
+														<button onclick="changeStatus(@item.BookingID)" type="submit" class="btn btn-danger">Pasif</button>
+													}
+												}
+											</td>
+											<td>@(item.Status ? "Gösteriliyor" : "Gösterilmiyor") </td>
+											<td>
+												<button onclick="deleteBooking(@item.BookingID)" type="submit" class="btn btn-outline-danger"><i class="la la-trash"></i> Sil</button>
+											</td>
+											<td>
+												<a href="/Admin/Booking/UpdateBooking/@item.BookingID" class="btn btn-outline-info"><i class="la la-pencil"></i> Güncelle</a>
+											</td>
+											<td>
+												<a asp-action="ShowOnHome" asp-controller="Booking" asp-area="Admin" asp-route-id="@item.BookingID" class="btn btn-outline-success"> Göster</a>
+												<a asp-action="DontShowOnHome" asp-controller="Booking" asp-area="Admin" asp-route-id="@item.BookingID" class="btn btn-outline-secondary"> Gösterme</a>
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						}
+						else
+						{
+							<p>Kayıtlı Herhangi Bir Öne Çıkan Bilgisi Verisi Bulunmamaktatır.</p>
+						}
+						<a href="/Admin/Booking/CreateBooking/" class="btn btn-outline-primary"><i class="la la-plus-circle"></i> Yeni Kategori</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function deleteBooking(id) {
+		Swal.fire({
+			title: 'Silmek istediğinize emin misiniz?',
+			text: 'Bu öğeyi silerseniz geri alamazsınız!',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Sil',
+			cancelButtonText: 'İptal'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = "/Admin/Booking/DeleteBooking?id=" + id;
+			}
+		});
+	}
+</script>
+
+<script>
+	function changeStatus(id) {
+		Swal.fire({
+			title: 'Durum',
+			text: 'Durumu değiştirmek istediğinizden emin misiniz?',
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonText: 'Değiştir',
+			cancelButtonText: 'İptal'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				window.location.href = "/Admin/Booking/ChangeStatus?id=" + id;
+			}
+		});
+	}
+</script>

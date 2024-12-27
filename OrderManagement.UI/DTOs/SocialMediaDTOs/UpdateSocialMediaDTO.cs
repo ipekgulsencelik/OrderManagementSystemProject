@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OrderManagement.DTO.DTOs.SocialMediaDTOs
+﻿namespace OrderManagement.UI.DTOs.SocialMediaDTOs
 {
     public class UpdateSocialMediaDTO
     {

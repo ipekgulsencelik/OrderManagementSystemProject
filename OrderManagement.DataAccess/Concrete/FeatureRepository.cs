@@ -10,5 +10,34 @@ namespace OrderManagement.DataAccess.Concrete
         public FeatureRepository(OrderManagementContext context) : base(context)
         {
         }
+
+        public void ChangeStatus(int id)
+        {
+            var value = _context.Features.Find(id);
+            if (value.Status == true)
+            {
+                value.Status = false;
+            }
+            else
+            {
+                value.Status = true;
+            }
+            _context.Update(value);
+            _context.SaveChanges();
+        }
+
+        public void DontShowOnHome(int id)
+        {
+            var value = _context.Features.Find(id);
+            value.IsShown = false;
+            _context.SaveChanges();
+        }
+
+        public void ShowOnHome(int id)
+        {
+            var value = _context.Features.Find(id);
+            value.IsShown = true;
+            _context.SaveChanges();
+        }
     }
 }

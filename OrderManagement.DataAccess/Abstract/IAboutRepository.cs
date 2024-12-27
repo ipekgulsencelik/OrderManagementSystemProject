@@ -4,5 +4,8 @@ namespace OrderManagement.DataAccess.Abstract
 {
     public interface IAboutRepository : IRepository<About>
     {
+        void ShowOnHome(int id);
+        void DontShowOnHome(int id);
+        void ChangeStatus(int id);
     }
 }

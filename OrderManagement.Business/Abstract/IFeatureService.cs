@@ -1,13 +1,11 @@
 ﻿using OrderManagement.Entity.Entitles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrderManagement.Business.Abstract
 {
     public interface IFeatureService : IGenericService<Feature>
     {
+        void TShowOnHome(int id);
+        void TDontShowOnHome(int id);
+        void TChangeStatus(int id);
     }
 }

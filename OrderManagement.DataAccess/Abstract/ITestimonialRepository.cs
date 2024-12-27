@@ -1,13 +1,11 @@
 ﻿using OrderManagement.Entity.Entitles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OrderManagement.DataAccess.Abstract
 {
     public interface ITestimonialRepository : IRepository<Testimonial>
     {
+        void ShowOnHome(int id);
+        void DontShowOnHome(int id);
+        void ChangeStatus(int id);
     }
 }

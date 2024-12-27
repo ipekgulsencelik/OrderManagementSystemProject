@@ -11,7 +11,7 @@ namespace OrderManagement.UI.DTOs.ProductDTOs
         public string? ImageUrl { get; set; }
         public bool IsShown { get; set; }
         public bool Status { get; set; }
-        public int CategoryID { get; set; }
+        public string? CategoryName { get; set; }
         public ResultCategoryDTO Category { get; set; }
     }
 }

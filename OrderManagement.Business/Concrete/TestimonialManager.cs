@@ -12,5 +12,20 @@ namespace OrderManagement.Business.Concrete
         {
             _testimonialRepository = testimonialRepository;
         }
+
+        public void TDontShowOnHome(int id)
+        {
+            _testimonialRepository.DontShowOnHome(id);
+        }
+
+        public void TShowOnHome(int id)
+        {
+            _testimonialRepository.ShowOnHome(id);
+        }
+
+        public void TChangeStatus(int id)
+        {
+            _testimonialRepository.ChangeStatus(id);
+        }
     }
 }

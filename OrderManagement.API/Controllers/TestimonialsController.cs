@@ -78,5 +78,26 @@ namespace OrderManagement.API.Controllers
             var courseCount = _testimonialService.TCount();
             return Ok(courseCount);
         }
+
+        [HttpGet("ShowOnHome/{id}")]
+        public IActionResult ShowOnHome(int id)
+        {
+            _testimonialService.TShowOnHome(id);
+            return Ok("Ana Sayfada Gösteriliyor");
+        }
+
+        [HttpGet("DontShowOnHome/{id}")]
+        public IActionResult DontShowOnHome(int id)
+        {
+            _testimonialService.TDontShowOnHome(id);
+            return Ok("Ana Sayfada Gösterilmiyor");
+        }
+
+        [HttpGet("ChangeStatus/{id}")]
+        public IActionResult ChangeStatus(int id)
+        {
+            _testimonialService.TChangeStatus(id);
+            return Ok("Durum Değiştirildi.");
+        }
     }
 }
