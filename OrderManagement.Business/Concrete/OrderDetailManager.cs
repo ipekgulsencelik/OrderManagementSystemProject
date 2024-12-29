@@ -15,7 +15,7 @@ namespace OrderManagement.Business.Concrete
 
         public void TChangeStatus(int id)
         {
-            _orderDetailRepository.ChangeStatus(int id);
+            _orderDetailRepository.ChangeStatus(id);
         }
     }
 }

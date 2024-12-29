@@ -50,6 +50,32 @@ namespace OrderManagement.DataAccess.Migrations
                     b.ToTable("Abouts");
                 });
 
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.Basket", b =>
+                {
+                    b.Property<int>("BasketID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BasketID"));
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RestaurantTableID")
+                        .HasColumnType("int");
+
+                    b.HasKey("BasketID");
+
+                    b.HasIndex("ProductID");
+
+                    b.HasIndex("RestaurantTableID");
+
+                    b.ToTable("Baskets");
+                });
+
             modelBuilder.Entity("OrderManagement.Entity.Entitles.Booking", b =>
                 {
                     b.Property<int>("BookingID")
@@ -82,6 +108,22 @@ namespace OrderManagement.DataAccess.Migrations
                     b.HasKey("BookingID");
 
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.CashBox", b =>
+                {
+                    b.Property<int>("CashBoxID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CashBoxID"));
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("CashBoxID");
+
+                    b.ToTable("CashBoxes");
                 });
 
             modelBuilder.Entity("OrderManagement.Entity.Entitles.Category", b =>
@@ -193,6 +235,34 @@ namespace OrderManagement.DataAccess.Migrations
                     b.ToTable("Features");
                 });
 
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.Notification", b =>
+                {
+                    b.Property<int>("NotificationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationID"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("NotificationID");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("OrderManagement.Entity.Entitles.Order", b =>
                 {
                     b.Property<int>("OrderID")
@@ -292,6 +362,50 @@ namespace OrderManagement.DataAccess.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.RestaurantTable", b =>
+                {
+                    b.Property<int>("RestaurantTableID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RestaurantTableID"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.HasKey("RestaurantTableID");
+
+                    b.ToTable("RestaurantTables");
+                });
+
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.Slider", b =>
+                {
+                    b.Property<int>("SliderID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SliderID"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsShown")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SliderID");
+
+                    b.ToTable("Sliders");
+                });
+
             modelBuilder.Entity("OrderManagement.Entity.Entitles.SocialMedia", b =>
                 {
                     b.Property<int>("SocialMediaID")
@@ -351,6 +465,25 @@ namespace OrderManagement.DataAccess.Migrations
                     b.ToTable("Testimonials");
                 });
 
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.Basket", b =>
+                {
+                    b.HasOne("OrderManagement.Entity.Entitles.Product", "Product")
+                        .WithMany("Baskets")
+                        .HasForeignKey("ProductID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OrderManagement.Entity.Entitles.RestaurantTable", "RestaurantTable")
+                        .WithMany("Baskets")
+                        .HasForeignKey("RestaurantTableID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("RestaurantTable");
+                });
+
             modelBuilder.Entity("OrderManagement.Entity.Entitles.OrderDetail", b =>
                 {
                     b.HasOne("OrderManagement.Entity.Entitles.Order", "Order")
@@ -393,7 +526,14 @@ namespace OrderManagement.DataAccess.Migrations
 
             modelBuilder.Entity("OrderManagement.Entity.Entitles.Product", b =>
                 {
+                    b.Navigation("Baskets");
+
                     b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("OrderManagement.Entity.Entitles.RestaurantTable", b =>
+                {
+                    b.Navigation("Baskets");
                 });
 #pragma warning restore 612, 618
         }

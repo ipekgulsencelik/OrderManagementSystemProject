@@ -11,113 +11,78 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 
-<div class="content">
-	<div class="container-fluid">
-		<h4 class="page-title">Rezervasyon Bilgisi İşlemleri</h4>
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card">
-					<div class="card-header">
-						<div class="card-title">Öne Çıkan Bilgisi Listesi</div>
+<div class="container-fluid">
+	<script type="text/javascript">
+
+		$(document).ready(() => {
+			var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7263/SignalRHub").build();
+
+			$("#connstatus").text(connection.state);
+
+			connection.start().then(() => {
+				$("#connstatus").text(connection.state);
+				setInterval(() => {
+					connection.invoke("GetBookingList");
+				}, 5000);
+			}).catch((err) => {
+				console.log(err)
+			});
+
+			connection.on("ReceiveBookingList", (values) => {
+				console.log(values);
+				let tablehtml = `<table class="table table-hover table-bordered" >
+								 <tr>
+									<th>#</th>
+									<th>Ad Soyad</th>
+									<th>Telefon</th>
+									<th>Email</th>
+									<th>Kaç Kişilik</th>
+									<th>Tarih</th>
+									<th>Durum</th>
+									<th>Sil</th>
+									<th>Güncelle</th>
+									<th>İptal Et</th>
+									<th>Onayla</th>
+								</tr>`
+
+				$.each(values, (index, item) => {
+					tablehtml += ` <tr>
+									<th>${index+1}</th>
+									<td>${item.name}</td>
+									<td>${item.phone}</td>
+									<td>${item.email}</td>
+									<td>${item.personCount}</td>
+									<td>${item.bookingDate}</td>
+									<td>${item.reservationStatus}</td>
+									<td><a href="/Admin/Booking/Delete/${item.BookingID}" class="btn btn-outline-danger btn-round"><i class="la la-trash"></i> Sil</a></td>
+									<td><a href="/Admin/Booking/Update/${item.BookingID}" class="btn btn-outline-info btn-round"><i class="la la-pencil"></i> Güncelle</a></td>
+									<td><a href="/Admin/Booking/Cancel/${item.BookingID}" class="btn btn-outline-danger btn-round"><i class="la la-times"></i> İptal Et</a></td>
+									<td><a href="/Admin/Booking/Approve/${item.BookingID}" class="btn btn-outline-primary btn-round"><i class="la la-plus"></i> Onayla</a></td>
+									</tr>`
+					});
+
+				tablehtml += `</table>`;
+
+				$("#bookingList").html(tablehtml);
+			});
+		});
+	</script>
+
+	<h4 class="page-title">Rezervasyon İşlemleri</h4>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-title">Rezervasyon Listesi</div>
+				</div>
+				<div class="card-body">
+					<div class="card-sub">
+						Rezervasyon ile ilgili işlemleri aşağıdan gerçekleştirebilirsiniz.
 					</div>
-					<div class="card-body">
-						@if (Model.Count() > 0)
-						{
-							<div class="card-sub">
-								Öne Çıkan Bilgisi ile ilgili işlemleri aşağıdan gerçekleştirebilirsiniz.
-							</div>
-							<table class="table table-hover table-bordered mt-3">
-								<thead>
-									<tr>
-										<th scope="col">#</th>
-										<th>Ad Soyad</th>
-										<th>Telefon</th>
-										<th>Email</th>
-										<th>Kaç Kişilik</th>
-										<th>Tarih</th>
-										<th scope="col">Durum</th>
-										<th>Gösterilme Durumu</th>
-										<th scope="col">Sil</th>
-										<th scope="col">Güncelle</th>
-										<th>Ana Sayfada</th>
-									</tr>
-								</thead>
-								<tbody>
-									@foreach (var item in Model)
-									{
-										count++;
-										<tr>
-											<th>@count</th>
-											<td>
-												@{
-													if (item.Status == true)
-													{
-														<button onclick="changeStatus(@item.BookingID)" type="submit" class="btn btn-success">Aktif</button>
-													}
-													else
-													{
-														<button onclick="changeStatus(@item.BookingID)" type="submit" class="btn btn-danger">Pasif</button>
-													}
-												}
-											</td>
-											<td>@(item.Status ? "Gösteriliyor" : "Gösterilmiyor") </td>
-											<td>
-												<button onclick="deleteBooking(@item.BookingID)" type="submit" class="btn btn-outline-danger"><i class="la la-trash"></i> Sil</button>
-											</td>
-											<td>
-												<a href="/Admin/Booking/UpdateBooking/@item.BookingID" class="btn btn-outline-info"><i class="la la-pencil"></i> Güncelle</a>
-											</td>
-											<td>
-												<a asp-action="ShowOnHome" asp-controller="Booking" asp-area="Admin" asp-route-id="@item.BookingID" class="btn btn-outline-success"> Göster</a>
-												<a asp-action="DontShowOnHome" asp-controller="Booking" asp-area="Admin" asp-route-id="@item.BookingID" class="btn btn-outline-secondary"> Gösterme</a>
-											</td>
-										</tr>
-									}
-								</tbody>
-							</table>
-						}
-						else
-						{
-							<p>Kayıtlı Herhangi Bir Öne Çıkan Bilgisi Verisi Bulunmamaktatır.</p>
-						}
-						<a href="/Admin/Booking/CreateBooking/" class="btn btn-outline-primary"><i class="la la-plus-circle"></i> Yeni Kategori</a>
-					</div>
+					<div id="bookingList"></div>
+					<a href="/Admin/Booking/CreateBooking/" class="btn btn-outline-primary">Yeni Rezervasyon Girişi</a>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-
-<script>
-	function deleteBooking(id) {
-		Swal.fire({
-			title: 'Silmek istediğinize emin misiniz?',
-			text: 'Bu öğeyi silerseniz geri alamazsınız!',
-			icon: 'warning',
-			showCancelButton: true,
-			confirmButtonText: 'Sil',
-			cancelButtonText: 'İptal'
-		}).then((result) => {
-			if (result.isConfirmed) {
-				window.location.href = "/Admin/Booking/DeleteBooking?id=" + id;
-			}
-		});
-	}
-</script>
-
-<script>
-	function changeStatus(id) {
-		Swal.fire({
-			title: 'Durum',
-			text: 'Durumu değiştirmek istediğinizden emin misiniz?',
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonText: 'Değiştir',
-			cancelButtonText: 'İptal'
-		}).then((result) => {
-			if (result.isConfirmed) {
-				window.location.href = "/Admin/Booking/ChangeStatus?id=" + id;
-			}
-		});
-	}
-</script>

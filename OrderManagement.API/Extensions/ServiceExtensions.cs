@@ -45,6 +45,21 @@ namespace OrderManagement.API.Extensions
 
             services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
             services.AddScoped<IOrderDetailService, OrderDetailManager>();
+
+            services.AddScoped<ICashBoxRepository, CashBoxRepository>();
+            services.AddScoped<ICashBoxService, CashBoxManager>();
+
+            services.AddScoped<IRestaurantTableRepository, RestaurantTableRepository>();
+            services.AddScoped<IRestaurantTableService, RestaurantTableManager>();
+
+            services.AddScoped<ISliderRepository, SliderRepository>();
+            services.AddScoped<ISliderService, SliderManager>();
+
+            services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<IBasketService, BasketManager>();
+
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<INotificationService, NotificationManager>();
         }
     }
 }

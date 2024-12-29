@@ -27,5 +27,10 @@ namespace OrderManagement.Business.Concrete
         {
             _aboutRepository.ChangeStatus(id);
         }
+
+        public About TGetLastAbout()
+        {
+            return _aboutRepository.GetLastAbout();
+        }
     }
 }

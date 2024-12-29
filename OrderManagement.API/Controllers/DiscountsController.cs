@@ -61,7 +61,7 @@ namespace OrderManagement.API.Controllers
         [HttpGet("GetActiveDiscounts")]
         public IActionResult GetActiveDiscounts()
         {
-            var values = _discountService.TGetFilteredList(x => x.Status == true);
+            var values = _discountService.TGetFilteredList(x => x.Status && x.IsShown);
             var actives = _mapper.Map<List<ResultDiscountDTO>>(values);
             return Ok(actives);
         }

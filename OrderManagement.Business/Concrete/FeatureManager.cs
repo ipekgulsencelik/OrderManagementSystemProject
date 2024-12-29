@@ -27,5 +27,10 @@ namespace OrderManagement.Business.Concrete
         {
             _featureRepository.ChangeStatus(id);
         }
+
+        public List<Feature> TGetLast3Features()
+        {
+            return _featureRepository.GetLast3Features();
+        }
     }
 }

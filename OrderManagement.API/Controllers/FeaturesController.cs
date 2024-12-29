@@ -18,6 +18,14 @@ namespace OrderManagement.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetLast3Features")]
+        public IActionResult GetLast3Features()
+        {
+            var values = _featureService.TGetLast3Features();
+            var features = _mapper.Map<List<ResultFeatureDTO>>(values);
+            return Ok(features);
+        }
+
         [HttpGet("{id}")]
         public IActionResult GetByID(int id)
         {

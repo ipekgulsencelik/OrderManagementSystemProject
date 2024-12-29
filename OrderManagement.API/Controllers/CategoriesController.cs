@@ -66,14 +66,14 @@ namespace OrderManagement.API.Controllers
         [HttpGet("GetActiveCategories")]
         public IActionResult GetActiveCategories()
         {
-            var value = _categoryService.TFilteredCount(x => x.Status == true);
+            var value = _categoryService.TGetFilteredList(x => x.Status && x.IsShown);
             return Ok(value);
         }
 
         [HttpGet("GetPassiveCategories")]
         public IActionResult GetPassiveCategories()
         {
-            var value = _categoryService.TFilteredCount(x => x.Status == false);
+            var value = _categoryService.TGetFilteredList(x => x.Status == false);
             return Ok(value);
         }
 

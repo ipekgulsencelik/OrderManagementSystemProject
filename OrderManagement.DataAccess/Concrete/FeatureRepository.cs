@@ -33,6 +33,12 @@ namespace OrderManagement.DataAccess.Concrete
             _context.SaveChanges();
         }
 
+        public List<Feature> GetLast3Features()
+        {
+            return _context.Features.Where(x => x.IsShown && x.Status ).OrderByDescending(x => x.FeatureID).Take(3).ToList();
+        }
+
+
         public void ShowOnHome(int id)
         {
             var value = _context.Features.Find(id);

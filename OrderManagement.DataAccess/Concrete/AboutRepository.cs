@@ -33,6 +33,11 @@ namespace OrderManagement.DataAccess.Concrete
             _context.SaveChanges();
         }
 
+        public About GetLastAbout()
+        {
+            return _context.Abouts.Where(x => x.IsShown && x.Status).OrderByDescending(x => x.AboutID).FirstOrDefault();
+        }
+
         public void ShowOnHome(int id)
         {
             var value = _context.Abouts.Find(id);

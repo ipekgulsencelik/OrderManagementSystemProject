@@ -42,13 +42,13 @@
 		</div>
 		<ul class="nav">
 			<li class="nav-item">
-				<a asp-controller="Statistics" asp-action="Index">
+				<a asp-controller="Statistics" asp-action="Index" asp-area="Admin">
 					<i class="la la-dashboard"></i>
 					<p>İstatistikler</p>
 				</a>
 			</li>
 			<li class="nav-item">
-				<a asp-controller="ProgressBar" asp-action="Index">
+				<a asp-controller="ProgressBar" asp-action="Index" asp-area="Admin">
 					<i class="la la-bar-chart"></i>
 					<p>Anlık Durum İlerleme</p>
 				</a>
@@ -60,7 +60,7 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a asp-controller="MenuTable" asp-action="Index">
+				<a asp-controller="Table" asp-action="Index" asp-area="Admin">
 					<i class="la la-table"></i>
 					<p>Masalar</p>
 					<span class="badge badge-count"></span>
@@ -74,7 +74,7 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a asp-controller="MenuTable" asp-action="TableListByStatus">
+				<a asp-controller="Table" asp-action="TableListByStatus" asp-area="Admin">
 					<i class="la la-cutlery"></i>
 					<p>Anlık Masa Durumları</p>
 					<span class="badge badge-count"></span>
@@ -112,7 +112,7 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a asp-controller="Notification" asp-action="Index">
+				<a asp-controller="Notification" asp-action="Index" asp-area="Admin">
 					<i class="la la-info"></i>
 					<p> Bildirimler</p>
 				</a>
@@ -143,12 +143,6 @@
 			</li>
 			<li class="nav-item">
 				<a asp-controller="Testimonial" asp-action="Index" asp-area="Admin">
-					<i class="la la-quote-left"></i>
-					<p>Referanslar</p>
-				</a>
-			</li>
-			<li class="nav-item">
-				<a asp-controller="Testimonial" asp-action="Index">
 					<i class="la la-quote-left"></i>
 					<p>Referanslar</p>
 				</a>

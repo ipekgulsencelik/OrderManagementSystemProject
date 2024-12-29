@@ -1,0 +1,26 @@
+﻿@model UpdateRestaurantTableDTO
+
+@{
+    ViewData["Title"] = "Masa Güncelleme";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Masa Güncelle</h3>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <input type="hidden" asp-for="RestaurantTableID" />
+            <label>Masa Adı</label>
+            <input type="text" asp-for="Name" class="form-control" />
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" asp-for="Status">
+                    <span class="form-check-sign">Durum</span>
+                </label>
+            </div>
+            <button type="submit" class="btn btn-outline-success btn-round">Güncelle</button>
+        </form>
+    </div>
+</div>

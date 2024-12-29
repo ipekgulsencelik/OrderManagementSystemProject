@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    ViewData["bookatable"] = "active";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<body class="sub_page">
+
+    </div>
+    <br />
+    @await Component.InvokeAsync("_DefaultBookATableComponentPartial")
+
+</body>

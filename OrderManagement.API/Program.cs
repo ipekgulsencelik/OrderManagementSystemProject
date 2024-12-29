@@ -3,6 +3,7 @@ using OrderManagement.API.Extensions;
 using OrderManagement.API.Hubs;
 using OrderManagement.DataAccess.Context;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,8 @@ builder.Services.AddDbContext<OrderManagementContext>(options =>
 });
 
 builder.Services.AddControllers();
+
+builder.Services.AddControllersWithViews().AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

@@ -50,8 +50,8 @@
                 $("#drinkCount").text(drinkCount);
             });
 
-            connection.on("ReceiveAvgProductPrice", (avgPrice) => {
-                $("#avgProductPrice").text(avgPrice);
+            connection.on("ReceiveAvgProductPrice", (avgProductPrice) => {
+                $("#avgProductPrice").text(avgProductPrice);
             });
 
             connection.on("ReceiveExpensiveProduct", (expensiveProduct) => {
@@ -244,7 +244,7 @@
                         <div class="col-7 d-flex align-items-center">
                             <div class="numbers">
                                 <p class="card-category">Ortalama Fiyat</p>
-                                <h4 class="card-title" id="avgPrice">
+                                <h4 class="card-title" id="avgProductPrice">
                                     <div class="spinner-grow spinner-grow-sm" role="status">
                                         <span class="visually-hidden">Yükleniyor...</span>
                                     </div>

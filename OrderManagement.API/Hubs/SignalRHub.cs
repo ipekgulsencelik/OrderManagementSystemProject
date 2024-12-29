@@ -3,7 +3,7 @@ using OrderManagement.Business.Abstract;
 
 namespace OrderManagement.API.Hubs
 {
-    public class SignalRHub(ICategoryService _categoryService, IProductService _productService, IOrderService _orderService) : Hub
+    public class SignalRHub(ICategoryService _categoryService, IProductService _productService, IOrderService _orderService, ICashBoxService _cashBoxService, IRestaurantTableService _restaurantTableService, IBookingService _bookingService, INotificationService _notificationService, IRestaurantTableService _tableService) : Hub
     {
         private static int clientCount { get; set; } = 0;
 
@@ -51,8 +51,59 @@ namespace OrderManagement.API.Hubs
             var lastOrderPrice = _orderService.TLastOrderPrice();
             await Clients.All.SendAsync("ReceiveLastOrderPrice", lastOrderPrice.ToString("00.00") + " ₺");
 
+            var totalCash = _cashBoxService.TTotalCashBox();
+            await Clients.All.SendAsync("ReceiveTotalCash", totalCash.ToString("00.00") + " ₺");
+
             var todaysTotalPrice = _orderService.TTodaysTotalPrice();
             await Clients.All.SendAsync("ReceiveTodaysTotalPrice", todaysTotalPrice.ToString("00.00") + " ₺");
+
+            var totalTableCount = _restaurantTableService.TCount();
+            await Clients.All.SendAsync("ReceiveTotalTableCount", totalTableCount);
+        }
+
+        public async Task SendProgress()
+        {
+            var totalCash = _cashBoxService.TTotalCashBox();
+            await Clients.All.SendAsync("ReceiveTotalCash", totalCash.ToString("00.00") + " ₺");
+
+            var activeOrders = _orderService.TFilteredCount(x => x.Description == "Müşteri Masada");
+            await Clients.All.SendAsync("ReceiveActiveOrderCount", activeOrders);
+
+            var totalTableCount = _restaurantTableService.TCount();
+            await Clients.All.SendAsync("ReceiveTotalTableCount", totalTableCount);
+
+            var avgPriceValue = _productService.TAvgProductPrice();
+            await Clients.All.SendAsync("ReceiveAvgPriceValue", avgPriceValue.ToString("00"));
+
+            var hamburgerCount = _productService.TFilteredCount(x => x.Category.CategoryName.ToLower() == "hamburger");
+            await Clients.All.SendAsync("ReceiveHamburgerCount", hamburgerCount);
+
+            var drinkCount = _productService.TFilteredCount(x => x.Category.CategoryName.ToLower() == "içecek");
+            await Clients.All.SendAsync("ReceiveDrinkCount", drinkCount);
+
+            var avgHamburgerPrice = _productService.TAvgHamburgerPrice();
+            await Clients.All.SendAsync("ReceiveAvgHamburgerPrice", avgHamburgerPrice.ToString("00"));
+        }
+
+        public async Task GetBookingList()
+        {
+            var values = _bookingService.TGetList();
+            await Clients.All.SendAsync("ReceiveBookingList", values);
+        }
+
+        public async Task SendNotifications()
+        {
+            var unreadNotifications = _notificationService.TUnreadNotificationCount();
+            await Clients.All.SendAsync("ReceiveUnreadNotifications", unreadNotifications);
+
+            var unreadNotificationList = _notificationService.TGetFilteredList(x => x.Status == false);
+            await Clients.All.SendAsync("ReceiveUnreadNotificationList", unreadNotificationList);
+        }
+
+        public async Task GetTableStatus()
+        {
+            var table = _tableService.TGetList();
+            await Clients.All.SendAsync("ReceiveTableStatus", table);
         }
     }
 }

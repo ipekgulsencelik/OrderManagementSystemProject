@@ -1,0 +1,37 @@
+﻿@model CreateSliderDTO
+
+@{
+    ViewData["Title"] = "Yeni Slider Oluştur";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Yeni Slider Oluştur</h3>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <label>Başlık</label>
+            <input type="text" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+            <br />
+            <label>Açıklama</label>
+            <textarea type="text" asp-for="Description" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+            <br />
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" asp-for="IsShown">
+                    <span class="form-check-sign">Ana Sayfada Gösterilsin</span>
+                </label>
+            </div>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" asp-for="Status">
+                    <span class="form-check-sign">Durum</span>
+                </label>
+            </div>
+            <button type="submit" class="btn btn-outline-primary btn-round">Kaydet</button>
+        </form>
+    </div>
+</div>

@@ -28,5 +28,10 @@ namespace OrderManagement.Business.Concrete
         {
             _contactRepository.ChangeStatus(id);
         }
+
+        public Contact TGetLastContact()
+        {
+            return _contactRepository.GetLastContact();
+        }
     }
 }

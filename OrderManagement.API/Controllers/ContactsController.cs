@@ -18,6 +18,14 @@ namespace OrderManagement.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("GetContact")]
+        public IActionResult GetContact()
+        {
+            var values = _contactService.TGetLastContact();
+            var contact = _mapper.Map<ResultContactDTO>(values);
+            return Ok(contact);
+        }
+
         [HttpGet("{id}")]
         public IActionResult GetByID(int id)
         {

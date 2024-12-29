@@ -59,7 +59,7 @@ namespace OrderManagement.API.Controllers
         [HttpGet("GetActiveTestimonials")]
         public IActionResult GetActiveTestimonials()
         {
-            var values = _testimonialService.TGetFilteredList(x => x.Status == true);
+            var values = _testimonialService.TGetFilteredList(x => x.Status && x.IsShown);
             var actives = _mapper.Map<List<ResultTestimonialDTO>>(values);
             return Ok(actives);
         }

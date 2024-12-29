@@ -59,7 +59,7 @@ namespace OrderManagement.API.Controllers
         [HttpGet("GetActiveSocialMedias")]
         public IActionResult GetActiveSocialMedias()
         {
-            var values = _socialMediaService.TGetFilteredList(x => x.Status == true);
+            var values = _socialMediaService.TGetFilteredList(x => x.Status && x.IsShown);
             var actives = _mapper.Map<List<ResultSocialMediaDTO>>(values);
             return Ok(actives);
         }
