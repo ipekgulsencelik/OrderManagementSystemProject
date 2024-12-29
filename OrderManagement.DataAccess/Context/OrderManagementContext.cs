@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OrderManagement.Entity.Entitles;
 
 namespace OrderManagement.DataAccess.Context
 {
-    public class OrderManagementContext : DbContext
+    public class OrderManagementContext : IdentityDbContext<AppUser, AppRole, int>
     {
         public OrderManagementContext(DbContextOptions options) : base(options)
         {

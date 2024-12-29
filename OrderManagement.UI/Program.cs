@@ -1,7 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+using OrderManagement.DataAccess.Context;
+using OrderManagement.Entity.Entitles;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddHttpClient();
+
+builder.Services.AddDbContext<OrderManagementContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<OrderManagementContext>();
 
 builder.Services.AddControllersWithViews();
 
