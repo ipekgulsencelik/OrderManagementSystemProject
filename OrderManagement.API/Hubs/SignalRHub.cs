@@ -105,5 +105,10 @@ namespace OrderManagement.API.Hubs
             var table = _tableService.TGetList();
             await Clients.All.SendAsync("ReceiveTableStatus", table);
         }
+
+        public async Task SendMessage(string user, string message)
+        {
+            await Clients.All.SendAsync("ReceiveMessage", user, message);
+        }
     }
 }
