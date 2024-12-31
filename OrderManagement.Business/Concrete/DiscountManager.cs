@@ -27,5 +27,10 @@ namespace OrderManagement.Business.Concrete
         {
             _discountRepository.ChangeStatus(id);
         }
+
+        public List<Discount> TGetLast2ActiveDiscounts()
+        {
+            return _discountRepository.GetLast2ActiveDiscounts();
+        }
     }
 }

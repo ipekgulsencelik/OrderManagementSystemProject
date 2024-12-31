@@ -94,5 +94,12 @@ namespace OrderManagement.API.Controllers
             _discountService.TChangeStatus(id);
             return Ok("Durum Değiştirildi.");
         }
+
+        [HttpGet("GetLast2ActiveDiscounts")]
+        public IActionResult GetLast2ActiveDiscounts()
+        {
+            var value = _discountService.TGetLast2ActiveDiscounts();
+            return Ok(value);
+        }
     }
 }

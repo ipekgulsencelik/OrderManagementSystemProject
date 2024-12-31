@@ -63,10 +63,17 @@ namespace OrderManagement.API.Controllers
             return Ok(value);
         }
 
+        [HttpGet("GetHomeCategories")]
+        public IActionResult GetHomeCategories()
+        {
+            var value = _categoryService.TGetFilteredList(x => x.Status && x.IsShown);
+            return Ok(value);
+        }
+
         [HttpGet("GetActiveCategories")]
         public IActionResult GetActiveCategories()
         {
-            var value = _categoryService.TGetFilteredList(x => x.Status && x.IsShown);
+            var value = _categoryService.TGetFilteredList(x => x.Status == true);
             return Ok(value);
         }
 

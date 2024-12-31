@@ -28,7 +28,11 @@
             <input type="date" asp-for="BookingDate" class="form-control" />
             <br />
             <label>Rezervasyon Durumu</label>
-            <input type="text" asp-for="ReservationStatus" class="form-control" />
+            <select asp-for="ReservationStatus" class="form-control">
+                <option>Durum Seçiniz</option>
+                <option value="Rezervasyon Onaylandı">Onayla</option>
+                <option value="Rezervasyon İptal Edildi">İptal Et</option>
+            </select>
             <br />
             <button type="submit" class="btn btn-outline-info btn-round">Güncelle</button>
         </form>

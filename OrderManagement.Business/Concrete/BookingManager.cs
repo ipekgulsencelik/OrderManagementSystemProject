@@ -12,5 +12,15 @@ namespace OrderManagement.Business.Concrete
         {
             _bookingRepository = bookingRepository;
         }
+
+        public void TBookingApproved(int id)
+        {
+            _bookingRepository.BookingApproved(id);
+        }
+
+        public void TBookingCancelled(int id)
+        {
+            _bookingRepository.BookingCancelled(id);
+        }
     }
 }

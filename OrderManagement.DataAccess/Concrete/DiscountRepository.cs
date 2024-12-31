@@ -1,4 +1,5 @@
-﻿using OrderManagement.DataAccess.Abstract;
+﻿using Microsoft.EntityFrameworkCore;
+using OrderManagement.DataAccess.Abstract;
 using OrderManagement.DataAccess.Context;
 using OrderManagement.DataAccess.Repositories;
 using OrderManagement.Entity.Entitles;
@@ -31,6 +32,11 @@ namespace OrderManagement.DataAccess.Concrete
             var value = _context.Discounts.Find(id);
             value.IsShown = false;
             _context.SaveChanges();
+        }
+
+        public List<Discount> GetLast2ActiveDiscounts()
+        {
+            return _context.Discounts?.AsNoTracking().Where(x => x.IsShown && x.Status).OrderByDescending(x => x.DiscountID).Take(2).ToList() ?? new List<Discount>();
         }
 
         public void ShowOnHome(int id)

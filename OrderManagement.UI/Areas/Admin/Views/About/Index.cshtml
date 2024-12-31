@@ -1,120 +1,70 @@
-﻿@model List<ResultAboutDTO>
+﻿@model ResultAboutDTO
 
 @{
     ViewData["Title"] = "Hakkımızda";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
-	int count = 0;
 }
 
 <script src="~/Scripts/jquery-3.4.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<div class="content">
-	<div class="container-fluid">
-		<h4 class="page-title">Hakkımızda İşlemleri</h4>
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card">
-					<div class="card-header">
-						<div class="card-title">Hakkımızda Listesi</div>
-					</div>
-					<div class="card-body">
-						@if (Model.Count() > 0)
-						{
-							<div class="card-sub">
-								Hakkımızda ile ilgili işlemleri aşağıdan gerçekleştirebilirsiniz.
-							</div>
-							<table class="table table-hover table-bordered mt-3">
-								<thead>
-									<tr>
-										<th scope="col">#</th>
-										<th>Başlık</th>
-										<th>Açıklama</th>
-										<th scope="col">Durum</th>
-										<th>Gösterilme Durumu</th>
-										<th scope="col">Sil</th>
-										<th scope="col">Güncelle</th>
-										<th>Ana Sayfada</th>
-									</tr>
-								</thead>
-								<tbody>
-									@foreach (var item in Model)
-									{
-										count++;
-										<tr>
-											<th>@count</th>
-											<td><img src="@item.ImageUrl" style="width:75px;height:75px;border-radius:50%" />   @item.Title</td>
-											<td>@(item.Description.Length > 50 ? item.Description.Substring(0, 50) : item.Description)</td>
-											<td>
-											<td>
-												@{
-													if (item.Status == true)
-													{
-														<button onclick="changeStatus(@item.AboutID)" type="submit" class="btn btn-success">Aktif</button>
-													}
-													else
-													{
-														<button onclick="changeStatus(@item.AboutID)" type="submit" class="btn btn-danger">Pasif</button>
-													}
-												}
-											</td>
-											<td>@(item.IsShown ? "Gösteriliyor" : "Gösterilmiyor") </td>
-											<td>
-												<button onclick="deleteAbout(@item.AboutID)" type="submit" class="btn btn-outline-danger"><i class="la la-trash"></i> Sil</button>
-											</td>
-											<td>
-												<a href="/Admin/About/UpdateAbout/@item.AboutID" class="btn btn-outline-info"><i class="la la-pencil"></i> Güncelle</a>
-											</td>
-											<td>
-												<a asp-action="ShowOnHome" asp-controller="About" asp-area="Admin" asp-route-id="@item.AboutID" class="btn btn-outline-success"> Göster</a>
-												<a asp-action="DontShowOnHome" asp-controller="About" asp-area="Admin" asp-route-id="@item.AboutID" class="btn btn-outline-secondary"> Gösterme</a>
-											</td>
-										</tr>
-									}
-								</tbody>
-							</table>
-						}
-						else
-						{
-							<p>Kayıtlı Herhangi Bir Hakkımızda Bilgisi Verisi Bulunmamaktatır.</p>
-						}
-						<a href="/Admin/About/CreateAbout/" class="btn btn-outline-primary"><i class="la la-plus-circle"></i> Yeni Hakkımızda</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="container">
+	<br />
+	<h3>Hakkımızda Bilgisi İşlemleri</h3>
+	<br />
+	@if (ViewBag.flag == true)
+	{
+		<table class="table table-striped">
+			<tr>
+				<th>Görsel :</th>
+				<td>
+					<img src="@Model.ImageUrl" alt="Hakkımızda Görseli" style="width:100px; height:100px; border-radius:50%;" />
+				</td>
+			</tr>
+			<tr>
+				<th>Başlık :</th>
+				<td>@Model.Title</td>
+			</tr>
+			<tr>
+				<th>Açıklama :</th>
+				<td>
+					@if (string.IsNullOrEmpty(Model.Description) || Model.Description.Length <= 150)
+					{
+						@Model.Description
+					}
+					else
+					{
+						<a href="#" id="DescriptionBtn"
+						   onclick="showDescription('@Html.Raw(Model.Description)', '@Model.AboutID'); return false;">
+							@Model.Description.Substring(0, 153)...
+						</a>
+					}
+				</td>
+			</tr>
+		</table>
+		<br />
+		<a href="/Admin/About/UpdateAbout/@Model.AboutID" class="btn btn-outline-success">Hakkımızda Bilgilerini Güncelle</a>
+	}
+	else
+	{
+		<p>Kayıtlı Herhangi Bir Hakkımızda Bilgisi Verisi Bulunmamaktatır.</p>
+		<br />
+		<a href="/Admin/About/CreateAbout/" class="btn btn-outline-primary"><i class="fas fa-plus-circle"></i> Yeni Hakkımızda Bilgisi Gir</a>
+	}
 </div>
 
 <script>
-	function deleteAbout(id) {
+	function showDescription(description, id) {
 		Swal.fire({
-			title: 'Silmek istediğinize emin misiniz?',
-			text: 'Bu öğeyi silerseniz geri alamazsınız!',
-			icon: 'warning',
+			title: 'Açıklama',
+			text: description,
+			icon: 'info',
 			showCancelButton: true,
-			confirmButtonText: 'Sil',
-			cancelButtonText: 'İptal'
+			confirmButtonText: 'Güncelle',
+			cancelButtonText: 'Tamam'
 		}).then((result) => {
 			if (result.isConfirmed) {
-				window.location.href = "/Admin/About/DeleteAbout?id=" + id;
-			}
-		});
-	}
-</script>
-
-<script>
-	function changeStatus(id) {
-		Swal.fire({
-			title: 'Durum',
-			text: 'Durumu değiştirmek istediğinizden emin misiniz?',
-			icon: 'question',
-			showCancelButton: true,
-			confirmButtonText: 'Değiştir',
-			cancelButtonText: 'İptal'
-		}).then((result) => {
-			if (result.isConfirmed) {
-				window.location.href = "/Admin/About/ChangeStatus?id=" + id;
+				window.location.href = "/Admin/About/UpdateAbout?id=" + id;
 			}
 		});
 	}

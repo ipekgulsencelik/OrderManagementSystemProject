@@ -5,8 +5,5 @@ namespace OrderManagement.Business.Abstract
     public interface IAboutService : IGenericService<About>
     {
         About TGetLastAbout();
-        void TShowOnHome(int id);
-        void TDontShowOnHome(int id);
-        void TChangeStatus(int id);
     }
 }

@@ -18,7 +18,7 @@ namespace OrderManagement.UI.Areas.Admin.Controllers
 
         public async Task<IActionResult> DeleteBooking(int id)
         {
-            await _client.DeleteAsync($"Bookings/{id}");
+            await _client.DeleteAsync("Bookings/" + id);
             return RedirectToAction(nameof(Index));
         }
 
@@ -38,7 +38,7 @@ namespace OrderManagement.UI.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateBooking(int id)
         {
-            var values = await _client.GetFromJsonAsync<UpdateBookingDTO>($"Bookings/{id}");
+            var values = await _client.GetFromJsonAsync<UpdateBookingDTO>("Bookings/" + id);
             return View(values);
         }
 
@@ -49,21 +49,15 @@ namespace OrderManagement.UI.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> ShowOnHome(int id)
+        public async Task<IActionResult> Approve(int id)
         {
-            await _client.GetAsync("Bookings/ShowOnHome/" + id);
+            await _client.GetAsync("Bookings/BookingApproved/" + id);
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> DontShowOnHome(int id)
+        public async Task<IActionResult> Cancel(int id)
         {
-            await _client.GetAsync("Bookings/DontShowOnHome/" + id);
-            return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> ChangeStatus(int id)
-        {
-            await _client.GetAsync("Bookings/ChangeStatus/" + id);
+            await _client.GetAsync("Bookings/BookingCancelled/" + id);
             return RedirectToAction("Index");
         }
     }

@@ -12,14 +12,14 @@ namespace OrderManagement.UI.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var values = await _client.GetFromJsonAsync<List<ResultAboutDTO>>("Abouts");
-            return View(values);
-        }
+            var value = await _client.GetFromJsonAsync<ResultAboutDTO>("Abouts/GetAbout");
 
-        public async Task<IActionResult> DeleteAbout(int id)
-        {
-            await _client.DeleteAsync($"Abouts/{id}");
-            return RedirectToAction(nameof(Index));
+            if (value.AboutID == null)
+                ViewBag.flag = false;
+            else
+                ViewBag.flag = true;
+
+            return View(value);
         }
 
         [HttpGet]
@@ -47,24 +47,6 @@ namespace OrderManagement.UI.Areas.Admin.Controllers
         {
             await _client.PutAsJsonAsync("Abouts", updateAboutDTO);
             return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<IActionResult> ShowOnHome(int id)
-        {
-            await _client.GetAsync("Abouts/ShowOnHome/" + id);
-            return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> DontShowOnHome(int id)
-        {
-            await _client.GetAsync("Abouts/DontShowOnHome/" + id);
-            return RedirectToAction("Index");
-        }
-
-        public async Task<IActionResult> ChangeStatus(int id)
-        {
-            await _client.GetAsync("Abouts/ChangeStatus/" + id);
-            return RedirectToAction("Index");
         }
     }
 }

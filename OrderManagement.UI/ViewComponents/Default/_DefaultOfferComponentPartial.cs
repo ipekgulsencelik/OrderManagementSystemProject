@@ -10,7 +10,7 @@ namespace OrderManagement.UI.ViewComponents.Default
         
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var discounts = await _client.GetFromJsonAsync<List<ResultDiscountDTO>>("Discounts/GetActiveDiscounts");
+            var discounts = await _client.GetFromJsonAsync<List<ResultDiscountDTO>>("Discounts/GetLast2ActiveDiscounts");
             return View(discounts);
         }
     }

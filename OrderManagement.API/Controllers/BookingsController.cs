@@ -55,5 +55,19 @@ namespace OrderManagement.API.Controllers
             _bookingService.TUpdate(value);
             return Ok("Rezervasyon Güncellendi");
         }
+
+        [HttpGet("BookingApproved/{id}")]
+        public IActionResult BookingApproved(int id)
+        {
+            _bookingService.TBookingApproved(id);
+            return Ok("Rezervasyon Durumu Değiştirildi.");
+        }
+
+        [HttpGet("BookingCancelled/{id}")]
+        public IActionResult BookingCancelled(int id)
+        {
+            _bookingService.TBookingCancelled(id);
+            return Ok("Rezervasyon Durumu Değiştirildi.");
+        }
     }
 }

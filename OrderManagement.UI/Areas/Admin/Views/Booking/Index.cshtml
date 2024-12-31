@@ -44,7 +44,6 @@
 									<th>İptal Et</th>
 									<th>Onayla</th>
 								</tr>`
-
 				$.each(values, (index, item) => {
 					tablehtml += ` <tr>
 									<th>${index+1}</th>
@@ -54,15 +53,13 @@
 									<td>${item.personCount}</td>
 									<td>${item.bookingDate}</td>
 									<td>${item.reservationStatus}</td>
-									<td><a href="/Admin/Booking/Delete/${item.BookingID}" class="btn btn-outline-danger btn-round"><i class="la la-trash"></i> Sil</a></td>
-									<td><a href="/Admin/Booking/Update/${item.BookingID}" class="btn btn-outline-info btn-round"><i class="la la-pencil"></i> Güncelle</a></td>
-									<td><a href="/Admin/Booking/Cancel/${item.BookingID}" class="btn btn-outline-danger btn-round"><i class="la la-times"></i> İptal Et</a></td>
-									<td><a href="/Admin/Booking/Approve/${item.BookingID}" class="btn btn-outline-primary btn-round"><i class="la la-plus"></i> Onayla</a></td>
+									<td><a href="/Admin/Booking/DeleteBooking/${item.bookingID}" class="btn btn-outline-danger btn-round"><i class="la la-trash"></i> Sil</a></td>
+									<td><a href="/Admin/Booking/UpdateBooking/${item.bookingID}" class="btn btn-outline-info btn-round"><i class="la la-pencil"></i> Güncelle</a></td>
+									<td><a href="/Admin/Booking/Cancel/${item.bookingID}" class="btn btn-outline-danger btn-round"><i class="la la-times"></i> İptal Et</a></td>
+									<td><a href="/Admin/Booking/Approve/${item.bookingID}" class="btn btn-outline-primary btn-round"><i class="la la-plus"></i> Onayla</a></td>
 									</tr>`
 					});
-
 				tablehtml += `</table>`;
-
 				$("#bookingList").html(tablehtml);
 			});
 		});

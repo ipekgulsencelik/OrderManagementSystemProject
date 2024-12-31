@@ -3,18 +3,18 @@ using OrderManagement.UI.DTOs.CategoryDTOs;
 using OrderManagement.UI.DTOs.ProductDTOs;
 using OrderManagement.UI.Helpers;
 
-namespace OrderManagement.UI.ViewComponents.Default
+namespace OrderManagement.UI.ViewComponents.Menu
 {
-    public class _DefaultMenuComponentPartial : ViewComponent
+    public class _MenuComponentPartial : ViewComponent
     {
         private readonly HttpClient _client = HttpClientInstance.CreateClient();
-        
+
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var categories = await _client.GetFromJsonAsync<List<ResultCategoryDTO>>("Categories/GetHomeCategories");
+            var categories = await _client.GetFromJsonAsync<List<ResultCategoryDTO>>("Categories/GetActiveCategories");
             ViewBag.categories = categories;
 
-            var products = await _client.GetFromJsonAsync<List<ResultProductDTO>>("Products/ProductListWithCategory");            
+            var products = await _client.GetFromJsonAsync<List<ResultProductDTO>>("Products/ProductListWithCategory");
             return View(products);
         }
     }

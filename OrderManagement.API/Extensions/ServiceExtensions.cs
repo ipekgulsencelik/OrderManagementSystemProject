@@ -52,9 +52,6 @@ namespace OrderManagement.API.Extensions
             services.AddScoped<IRestaurantTableRepository, RestaurantTableRepository>();
             services.AddScoped<IRestaurantTableService, RestaurantTableManager>();
 
-            services.AddScoped<ISliderRepository, SliderRepository>();
-            services.AddScoped<ISliderService, SliderManager>();
-
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<IBasketService, BasketManager>();
 

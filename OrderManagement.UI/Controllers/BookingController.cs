@@ -18,7 +18,7 @@ namespace OrderManagement.UI.Controllers
         {
             createBookingDTO.ReservationStatus = "Rezervasyon Alındı";
             createBookingDTO.Status = true;
-            await _client.PostAsJsonAsync("bookings", createBookingDTO);
+            await _client.PostAsJsonAsync("Bookings", createBookingDTO);
             return NoContent();
         }
     }
