@@ -57,6 +57,9 @@ namespace OrderManagement.API.Extensions
 
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<INotificationService, NotificationManager>();
+
+            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IMessageService, MessageManager>();
         }
     }
 }
