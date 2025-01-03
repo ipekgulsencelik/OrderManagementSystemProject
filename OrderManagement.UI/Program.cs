@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using OrderManagement.DataAccess.Context;
 using OrderManagement.Entity.Entitles;
@@ -14,7 +16,18 @@ builder.Services.AddDbContext<OrderManagementContext>(options =>
 
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<OrderManagementContext>();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(cfg =>
+{
+    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+    cfg.Filters.Add(new AuthorizeFilter(policy));
+});
+
+builder.Services.ConfigureApplicationCookie(x =>
+{
+    x.LoginPath = new PathString("/Login/SignIn");
+    x.AccessDeniedPath = new PathString("/ErrorPage/AccessDenied/");
+    x.LogoutPath = new PathString("/Login/Logout");
+});
 
 var app = builder.Build();
 
@@ -27,8 +40,10 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
