@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using OrderManagement.Business.Abstract;
 using OrderManagement.DTO.DTOs.BookingDTOs;
@@ -8,7 +9,7 @@ namespace OrderManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BookingsController(IMapper _mapper, IBookingService _bookingService) : ControllerBase
+    public class BookingsController(IMapper _mapper, IBookingService _bookingService, IValidator<CreateBookingDTO> _validator) : ControllerBase
     {
         [HttpGet]
         public IActionResult GetList()
@@ -35,13 +36,14 @@ namespace OrderManagement.API.Controllers
         [HttpPost]
         public IActionResult Create(CreateBookingDTO createBookingDTO)
         {
-            var newValue = _mapper.Map<Booking>(createBookingDTO);
-            if (!ModelState.IsValid)
+            var validationResult = _validator.Validate(createBookingDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest();
+                return BadRequest(validationResult.Errors);
             }
-            _bookingService.TCreate(newValue);
-            return Ok("Yeni Rezervasyon Oluşturuldu");
+            var value = _mapper.Map<Booking>(createBookingDTO);
+            _bookingService.TCreate(value);
+            return Ok("Yeni Rezervasyon Yapıldı");
         }
 
         [HttpPut]

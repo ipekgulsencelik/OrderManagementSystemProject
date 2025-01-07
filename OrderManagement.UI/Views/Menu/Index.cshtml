@@ -1,14 +1,114 @@
-﻿
+﻿@model List<ResultProductDTO>
+
 @{
     ViewData["Title"] = "Menü";
     ViewData["menu"] = "active";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <body class="sub_page">
 
     </div>
     <br />
-    @await Component.InvokeAsync("_MenuComponentPartial")
+
+    <section class="food_section layout_padding-bottom">
+        <div class="container">
+            <div class="heading_container heading_center">
+                <h2>Menümüz</h2>
+            </div>
+            <ul class="filters_menu">
+                <li class="active" data-filter="*">Tümü</li>
+                @foreach (var category in ViewBag.categories as List<ResultCategoryDTO>)
+                {
+                    <li data-filter=".@category.CategoryName">@category.CategoryName</li>
+                }
+            </ul>
+            <div class="filters-content">
+                <div class="row grid">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-sm-6 col-lg-4 all @item.CategoryName">
+                            <div class="box">
+                                <div>
+                                    <div class="img-box">
+                                        <img src="@item.ImageUrl" alt="@item.ProductName">
+                                    </div>
+                                    <div class="detail-box">
+                                        <h5>@item.ProductName</h5>
+                                        <div class="options">
+                                            <h6>@item.Price ₺</h6>
+                                            <a href="#" onclick="addToBasket(@item.ProductID, @ViewBag.tableId, '@item.ProductName')">
+                                                <i class="fa fa-shopping-cart"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="btn-box">
+                <a asp-controller="Basket" asp-action="Index" asp-route-id="@ViewBag.tableId">Sepete Git (@ViewBag.tableId)</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function addToBasket(productId, tableId, productName) {
+            const requestData = { ProductID: productId, RestaurantTableID: tableId, Quantity: 1 };
+            $.ajax({
+                type: 'POST',
+                url: '/Basket/AddToBasket',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function (response) {
+                    Swal.fire({
+                        title: 'Ürün Sepete Eklendi',
+                        text: productName + ' başarıyla sepete eklendi.',
+                        icon: 'success',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sepete Git',
+                        cancelButtonText: 'Devam Et'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/Basket/Index/' + tableId;
+                        }
+                    });
+                    updateBasketSummary(tableId); // Sepeti güncelle
+                },
+                error: function (xhr) {
+                    Swal.fire({
+                        title: 'Hata',
+                        text: xhr.responseJSON?.Message || 'Ürün sepete eklenirken bir sorun oluştu.',
+                        icon: 'error',
+                        confirmButtonText: 'Tamam'
+                    });
+                }
+            });
+        }
+
+        // Sepet özeti güncelleniyor (örneğin, sepetin toplam tutarını güncellemek için)
+        function updateBasketSummary(tableId) {
+            $.ajax({
+                type: 'GET',
+                url: '/Basket/Index/' + tableId,
+                success: function (response) {
+                    let totalAmount = 0;
+                    response.forEach(item => {
+                        totalAmount += item.TotalPrice;  // Sepet toplamını hesapla
+                    });
+
+                    // Sepet tutarını ekrana yansıt
+                    $('#totalBasketAmount').text(totalAmount.toFixed(2) + ' ₺');
+                },
+                error: function () {
+                    console.log('Sepet özeti alınırken bir hata oluştu.');
+                }
+            });
+        }
+    </script>
 
 </body>

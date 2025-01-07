@@ -4,6 +4,8 @@ using OrderManagement.UI.Helpers;
 
 namespace OrderManagement.UI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Route("[area]/[controller]/[action]/{id?}")]
     public class MessageController : Controller
     {
         private readonly HttpClient _client = HttpClientInstance.CreateClient();

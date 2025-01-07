@@ -1,6 +1,9 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using OrderManagement.API.Extensions;
 using OrderManagement.API.Hubs;
+using OrderManagement.Business.Validators.AboutValidators;
+using OrderManagement.Business.Validators.BookingValidators;
 using OrderManagement.DataAccess.Context;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -25,6 +28,13 @@ builder.Services.AddCors(opt =>
 builder.Services.AddSignalR();
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateAboutValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateAboutValidator>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<CreateBookingValidator>();
+
+ValidatorOptions.Global.LanguageManager.Culture = new System.Globalization.CultureInfo("tr");
 
 builder.Services.AddDbContext<OrderManagementContext>(options =>
 {

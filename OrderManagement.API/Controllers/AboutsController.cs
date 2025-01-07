@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using OrderManagement.Business.Abstract;
 using OrderManagement.DTO.DTOs.AboutDTOs;
@@ -8,7 +9,7 @@ namespace OrderManagement.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AboutsController(IMapper _mapper, IAboutService _aboutService) : ControllerBase
+    public class AboutsController(IMapper _mapper, IAboutService _aboutService, IValidator<CreateAboutDTO> _createAboutValidator) : ControllerBase
     {
         [HttpGet]
         public IActionResult GetList()

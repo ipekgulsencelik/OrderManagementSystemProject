@@ -36,7 +36,6 @@ namespace OrderManagement.API.Controllers
         {
             var newBasket = mapper.Map<Basket>(createBasketDTO);
             newBasket.Quantity = 1;
-            newBasket.RestaurantTableID = 4;
             _basketService.TCreate(newBasket);
             return Ok("Sepete Ürün Eklendi");
         }
@@ -46,6 +45,30 @@ namespace OrderManagement.API.Controllers
         {
             _basketService.TDelete(id);
             return Ok("Sepetten Ürün Silindi");
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateBasket(int id, UpdateBasketDTO updateBasketDTO)
+        {
+            if (updateBasketDTO == null || updateBasketDTO.BasketID <= 0 || updateBasketDTO.Quantity < 1)
+            {
+                return BadRequest(new { Message = "Geçersiz sepet verisi." });
+            }
+
+            // Get the basket item by its ID
+            var existingBasket = _basketService.TGetByID(id);
+            if (existingBasket == null)
+            {
+                return NotFound(new { Message = "Sepet bulunamadı." });
+            }
+
+            // Update the basket item's quantity and price
+            existingBasket.Quantity = updateBasketDTO.Quantity;
+
+            // Save the updated basket to the database
+            _basketService.TUpdate(existingBasket);
+
+            return Ok(new { Message = "Sepet başarıyla güncellendi." });
         }
     }
 }

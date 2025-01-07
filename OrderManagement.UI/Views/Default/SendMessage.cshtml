@@ -1,0 +1,63 @@
+﻿@model CreateMessageDTO
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<section class="book_section layout_padding">
+    <div class="container">
+        <div class="heading_container">
+            <h2>
+                Bize Ulaşın
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form_container">
+                    <form method="post" asp-controller="Default" asp-action="SendMessage">
+                        <div>
+                            <input type="text" class="form-control" asp-for="Name" placeholder="Adınız Soyadınız" />
+                        </div>
+                        <div>
+                            <input type="text" class="form-control" placeholder="Telefon Numaranız" asp-for="Phone" />
+                        </div>
+                        <div>
+                            <input type="email" class="form-control" asp-for="Email" placeholder="Email Adresiniz" />
+                        </div>
+                        <div>
+                            <input type="text" class="form-control" asp-for="Subject" placeholder="Konu" />
+                        </div>
+                        <div>
+                            <textarea type="text" class="form-control" asp-for="Content" rows="10" placeholder="Mesajınızı yazın..."></textarea>
+                        </div>
+                        <div class="btn_box">
+                            <button onclick="sendMessage()">
+                                Mesajı Gönder
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="map_container ">
+                    <iframe src="@ViewBag.location" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+        function sendMessage() {
+        Swal.fire({
+            title: 'Tebrikler!',
+            text: 'Mesajınız Gönderildi. Size en kısa sürede dönüş yapılacaktır.',
+            icon: 'success',
+            showCancelButton: false,
+            confirmButtonText: 'Tamam',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "/Default/Index";
+            }
+        }); 
+    }
+</script>

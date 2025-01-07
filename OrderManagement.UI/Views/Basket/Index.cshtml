@@ -1,22 +1,25 @@
 ﻿@model List<ResultBasketDTO>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Sepet";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <body class="sub_page">
 
     </div>
     <br />
     <br />
+
     @{
         int count = 0;
-        decimal basketTotalPrice = 0;
-        decimal basketTotalPriceWithTax = 0;
-        decimal tax = 0;
-        decimal totalPrice = 0;
+        decimal basketTotalPrice = Model.Sum(x => x.TotalPrice);
+        decimal tax = basketTotalPrice * 0.1m;
+        decimal basketTotalPriceWithTax = basketTotalPrice + tax;
     }
+
     <div class="container-fluid">
         <div class="row px-xl-5">
             <div class="col-12">
@@ -30,6 +33,7 @@
     </div>
     <div class="container-fluid">
         <div class="row px-xl-5">
+            <!-- Basket Table -->
             <div class="col-8 mb-5">
                 <table class="table table-striped table-hover">
                     <thead class="thead-dark">
@@ -42,34 +46,46 @@
                             <th>Sil</th>
                         </tr>
                     </thead>
-                    @foreach (var item in Model)
-                    {
-                        count++;
-                        basketTotalPrice = Model.Sum(x => x.Price);
-                        tax = basketTotalPrice / 100 * 10;
-                        basketTotalPriceWithTax = basketTotalPrice + tax;
-                        totalPrice = item.Price * item.Quantity;
-                        <tbody class="align-middle">
-                            <tr>
+                    <tbody class="align-middle">
+                        @foreach (var item in Model)
+                        {
+                            count++;
+                            <tr id="basket-row-@item.BasketID">
                                 <td>@count</td>
                                 <td>@item.ProductName</td>
-                                <td>@item.Quantity</td>
-                                <td>@item.Price ₺</td>
-                                <td>@item.TotalPrice ₺</td>
                                 <td>
-                                    <a asp-controller="Basket" asp-action="RemoveBasketItem" asp-route-id="@item.BasketID" id="btnDeleteBasketId" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
+                                    <div class="d-flex">
+                                        <button onclick="changeQuantity(@item.BasketID, 'increase')" class="btn btn-sm btn-primary">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                        <span class="mx-2" id="quantity-@item.BasketID">@item.Quantity</span>
+                                        <button onclick="changeQuantity(@item.BasketID, 'decrease')" class="btn btn-sm btn-warning">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td class="price" data-price="@item.Price">@item.Price ₺</td>
+                                <td class="totalPrice">@item.TotalPrice ₺</td>
+                                <td>
+                                    <a asp-controller="Basket" asp-action="RemoveBasketItem" asp-route-id="@item.BasketID" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-times"></i>
+                                    </a>
                                 </td>
                             </tr>
-                        </tbody>
-                    }
+                        }
+                    </tbody>
                 </table>
             </div>
+
+            <!-- Summary and Coupon -->
             <div class="col-4">
                 <form>
                     <div class="input-group">
                         <input type="text" id="couponCode" class="form-control border-1 p-4" placeholder="Kupon Kodunuz" />
                         <div>
-                            <button style="height:48px;padding-top:11px; margin-left:5px" class="btn bnt-sm btn-warning text-dark" id="btnCouponCode">Kuponu Uygula</button>
+                            <button type="button" style="height:48px;padding-top:11px; margin-left:5px" class="btn btn-warning text-dark" id="btnCouponCode">
+                                Kuponu Uygula
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -77,27 +93,26 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title text-center text-uppercase mb-3">
-                            <span class="bg-warning pr-3 text-dark">Sepet Özetİ</span>
+                            <span class="bg-warning pr-3 text-dark">Sepet Özeti</span>
                         </h5>
                         <div class="bg-light p-30 mb-5">
-                            <div id="container" class="border-bottom pb-2">
+                            <div class="border-bottom pb-2">
                                 <div class="d-flex justify-content-between mb-3">
                                     <h6>Toplam Tutar :</h6>
-                                    <h6><span id="totalPrice">@(Model.Sum(x => x.TotalPrice)) ₺</span></h6>
+                                    <h6><span id="totalPrice">@basketTotalPrice ₺</span></h6>
                                 </div>
                                 <div class="d-flex justify-content-between mb-3">
-                                    <h6 class="font-weight-medium">Kdv Oranı( %10 ) :</h6>
-                                    <h6 id="kdv" class="font-weight-medium">@(((double)Model.Sum(x => x.TotalPrice) * 0.1)) ₺</h6>
+                                    <h6>KDV Oranı (%10):</h6>
+                                    <h6 id="kdv">@tax ₺</h6>
                                 </div>
-                                <br>
-                                <div class="pt-2">
-                                    <div class="d-flex justify-content-between mt-2">
-                                        <h5>Ödenecek Tutar :</h5>
-                                        <h5><span id="totalPriceWithKdv">@((double)Model.Sum(x => x.TotalPrice) + (double)Model.Sum(x => x.TotalPrice) * 0.1) ₺</span></h5>
-                                    </div>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <h5>Ödenecek Tutar :</h5>
+                                    <h5><span id="totalPriceWithKdv">@basketTotalPriceWithTax ₺</span></h5>
                                 </div>
                                 <br />
-                                <button id="btncheckout" class="btn btn-block btn-warning font-weight-bold my-3">Siparişi Tamamla</button>
+                                <button id="btncheckout" class="btn btn-block btn-warning font-weight-bold my-3">
+                                    Siparişi Tamamla
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -105,5 +120,61 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function changeQuantity(basketId, operation) {
+            const quantityElement = $(`#quantity-${basketId}`);
+            let currentQuantity = parseInt(quantityElement.text());
+
+            // Artırma veya azaltma işlemi
+            let newQuantity = operation === 'increase' ? currentQuantity + 1 : currentQuantity - 1;
+
+            if (newQuantity < 1) {
+                return; // Miktar 1'den küçük olamaz
+            }
+
+            const data = { BasketID: basketId, Quantity: newQuantity };
+
+            $.ajax({
+                type: 'PUT',
+                url: '/Basket/UpdateQuantity', // Sepet güncelleme API endpoint'i
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    quantityElement.text(newQuantity); // UI'da yeni miktarı güncelle
+
+                    const row = $(`#basket-row-${basketId}`);
+                    const price = row.find('.price').data('price');
+                    const totalPrice = newQuantity * price;
+                    row.find('.totalPrice').text(totalPrice.toFixed(2) + " ₺");
+
+                    updateBasketSummary(); // Sepet özeti güncelleniyor
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        title: 'Hata',
+                        text: xhr.responseJSON?.Message || 'Ürün miktarı güncellenirken bir sorun oluştu.',
+                        icon: 'error',
+                        confirmButtonText: 'Tamam'
+                    });
+                }
+            });
+        }
+
+        function updateBasketSummary() {
+            let totalPrice = 0;
+            $('.totalPrice').each(function() {
+                totalPrice += parseFloat($(this).text().replace(' ₺', ''));
+            });
+
+            let tax = totalPrice * 0.1;
+            let totalWithTax = totalPrice + tax;
+
+            // Özet fiyatları güncelleniyor
+            $('#totalPrice').text(totalPrice.toFixed(2) + " ₺");
+            $('#kdv').text(tax.toFixed(2) + " ₺");
+            $('#totalPriceWithKdv').text(totalWithTax.toFixed(2) + " ₺");
+        }
+    </script>
 
 </body>

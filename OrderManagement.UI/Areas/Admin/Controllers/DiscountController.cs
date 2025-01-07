@@ -42,7 +42,7 @@ namespace OrderManagement.UI.Areas.Admin.Controllers
             return View(value);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdateDiscount(UpdateDiscountDTO updateDiscountDTO)
         {
             await _client.PutAsJsonAsync("Discounts", updateDiscountDTO);

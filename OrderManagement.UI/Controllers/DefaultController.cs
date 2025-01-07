@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OrderManagement.UI.DTOs.ContactDTOs;
 using OrderManagement.UI.DTOs.MessageDTOs;
 using OrderManagement.UI.Helpers;
 
@@ -10,8 +11,11 @@ namespace OrderManagement.UI.Controllers
     {
         private readonly HttpClient _client = HttpClientInstance.CreateClient();
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var value = await _client.GetFromJsonAsync<ResultContactDTO>("Contacts/GetContact");
+            string map = value.Location.ToString();
+            ViewBag.location = map;
             return View();
         }
 
